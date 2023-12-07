@@ -1,0 +1,39 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - "master"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cleanup work directory
+        run: |
+          rm -rf *
+      - name: Extract branch name
+        run: |
+          BRANCH=${GITHUB_REF#refs/heads/}
+          echo "BRANCH=${BRANCH##*/}" >> "$GITHUB_ENV"
+        id: extract_branch
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          path: "repos/src"
+      - name: Login to Docker
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | buildah login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin "${{ secrets.DOCKER_HOST }}"
+      - name: Build server
+        run: |
+          buildah build --format=docker \
+            --tag "${{ secrets.DOCKER_TAG }}:$BRANCH" \
+            --tag "${{ secrets.DOCKER_TAG }}:$GITHUB_SHA" \
+            --platform linux/amd64 \
+            .
+        working-directory: repos/src
+      - name: Push server
+        run: |
+          buildah push "${{ secrets.DOCKER_TAG }}:$BRANCH" && \
+          buildah push "${{ secrets.DOCKER_TAG }}:$GITHUB_SHA"
