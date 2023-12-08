@@ -21,6 +21,8 @@ export default async function handler(
   const testConnectionString = process.env.TEST_EMAIL_CONNECTION_STRING;
   const testNoaConnectionString = process.env.TESTNOA_EMAIL_CONNECTION_STRING;
   const testAConnectionString = process.env.TESTA_EMAIL_CONNECTION_STRING;
+  const testCnameConnectionString =
+    process.env.TESTCNAME_EMAIL_CONNECTION_STRING;
 
   if (!questionHash) {
     res
@@ -59,6 +61,14 @@ export default async function handler(
     return;
   }
 
+  if (!testCnameConnectionString) {
+    res.status(500).json({
+      ok: false,
+      error: "No test cname connection string in environment",
+    });
+    return;
+  }
+
   if (!validator.isEmail(email)) {
     res.status(400).json({ ok: false, error: "Not a valid email" });
     return;
@@ -72,6 +82,8 @@ export default async function handler(
   const client = new EmailClient(
     source.includes("codespring.ro")
       ? prodConnectionString
+      : source.includes("cnamerecord")
+      ? testCnameConnectionString
       : source.includes("noarecord")
       ? testNoaConnectionString
       : source.includes("arecord")

@@ -80,6 +80,7 @@ export const EmailForm = () => {
             <option>DoNotReply@testemail.tohka.us</option>
             <option>DoNotReply@noarecord.tohka.us</option>
             <option>DoNotReply@arecord.tohka.us</option>
+            <option>DoNotReply@cnamerecord.tohka.us</option>
           </select>
         </div>
         <div className="mb-5">
