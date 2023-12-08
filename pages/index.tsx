@@ -73,6 +73,8 @@ export const EmailForm = () => {
             onChange={(e) => setSourceAddress(e.target.value)}
             required
           >
+            <option>timetable@azora.codespring.ro</option>
+            <option>DoNotReply@azora.codespring.ro</option>
             <option>timetable@azoramail.codespring.ro</option>
             <option>DoNotReply@azoramail.codespring.ro</option>
             <option>DoNotReply@testemail.tohka.us</option>
