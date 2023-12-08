@@ -5,7 +5,7 @@ import { EmailSendResponse } from "@azure/communication-email";
 const inter = Inter({ subsets: ["latin"] });
 
 const defaultEmail = "derzsi.daniel@codespring.ro";
-const defaultSource = "timetable@azoramail.codespring.ro";
+const defaultSource = "timetable@azora.codespring.ro";
 
 export interface SendEmailResponseDTO {
   error?: string;
