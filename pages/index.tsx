@@ -76,6 +76,7 @@ export const EmailForm = () => {
             <option>timetable@azoramail.codespring.ro</option>
             <option>DoNotReply@azoramail.codespring.ro</option>
             <option>DoNotReply@testemail.tohka.us</option>
+            <option>DoNotReply@noarecord.tohka.us</option>
           </select>
         </div>
         <div className="mb-5">

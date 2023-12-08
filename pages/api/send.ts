@@ -19,6 +19,7 @@ export default async function handler(
   const questionHash = process.env.QUESTION_HASH;
   const prodConnectionString = process.env.PROD_EMAIL_CONNECTION_STRING;
   const testConnectionString = process.env.TEST_EMAIL_CONNECTION_STRING;
+  const testNoaConnectionString = process.env.TESTNOA_EMAIL_CONNECTION_STRING;
 
   if (!questionHash) {
     res
@@ -41,6 +42,14 @@ export default async function handler(
     return;
   }
 
+  if (!testNoaConnectionString) {
+    res.status(500).json({
+      ok: false,
+      error: "No test noa connection string in environment",
+    });
+    return;
+  }
+
   if (!validator.isEmail(email)) {
     res.status(400).json({ ok: false, error: "Not a valid email" });
     return;
@@ -54,6 +63,8 @@ export default async function handler(
   const client = new EmailClient(
     source.includes("codespring.ro")
       ? prodConnectionString
+      : source.includes("noarecord")
+      ? testNoaConnectionString
       : testConnectionString
   );
   const message = {
